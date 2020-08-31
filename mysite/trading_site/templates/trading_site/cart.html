@@ -1,0 +1,94 @@
+{% extends 'trading_site/base.html' %}
+
+{% block content %}
+<div class="container  my-5">
+{% if no_products == True %}
+<div class="jumbotron jumbotron-fluid" style="position: relative;">
+  <div class="container">
+    <h1 class="display-4">Nothing in cart</h1>
+    <p class="lead">You have no products added into the cart, add products to the cart for checkout</p>
+  </div>
+</div>
+{% else %}
+    {% for product,values in product_details.items %}
+  
+
+
+<div class="d-flex justify-content-start">
+<div class=" d-flex mt-3">
+        <div class="card "  >
+            <div class="card-body d-flex">  
+            {% for item in values %}
+            {% if forloop.counter == 1 %}
+                <img class="card-img-top" src="{{item}}"
+                    style="height: 150px; width: 150px;">
+                {% endif %}
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="container d-flex mt-3">
+        <div class="">
+
+
+
+            <div class="card-body">
+                {% for item in values %}
+                
+                
+                {% if forloop.counter == 2 %}
+                <h2>
+                   {{item}}
+                </h2>
+                
+                {% elif forloop.counter == 3 %}
+                <p>
+                    {{item}}
+                </p>
+                {% elif forloop.counter == 4 %}
+
+                <div class="row">
+               Qty: <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="minus" value="{{product}}">
+                <button type="submit" class="btn btn-outline-dark mx-2">-</button></form>
+                <h5 class="mt-1">{{item}}</h5>
+                <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="plus" value="{{product}}">
+                <button type="submit" class="btn btn-outline-dark mx-2">+</button></form>
+                </div>
+                
+
+                <br>
+                {% elif forloop.counter == 5 %}
+                Price: €{{item}}<br>            
+                <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="remove" value="{{product}}">
+               <button type="submit" class="btn my-2 mx-1 btn-primary btn-sm">Remove item</button>
+                
+                </form>
+                {% else %}
+
+                {% endif %}{% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endfor %}
+<div class="container">
+<div class="d-flex justify-content-end">
+<p class="my-2 mr-3">Total Amount: €{{total_amount}}</p>
+<a class="btn btn-primary" href="{% url 'trading_site:checkout' %}">Proceed to Checkout</a>
+
+</div>
+</div>
+
+ {% endif %}            
+</div>
+
+{% endblock  %}

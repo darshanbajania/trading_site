@@ -1,0 +1,132 @@
+{% extends 'trading_site/customer_profile.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <style>
+    body {
+      background-color: rgb(255, 255, 255)
+    }
+
+    .btncolour {
+      background-color: rgb(52, 58, 64)
+    }
+
+    .btncolor1 {
+      background-color: rgb(108, 117, 125)
+    }
+
+    .btncolor2 {
+      background-color: rgb(223, 231, 237)
+    }
+
+    label[for="id_pdfs"] {
+      width: 90px;
+      background-color: rgba(255, 255, 255);
+      display: none;
+
+    }
+
+    input[type="file"i] {
+
+
+      cursor: default;
+      display: inline-block;
+      color: blue;
+      text-align: center !important;
+      padding: 10px;
+
+    }
+
+    label[for="id_emails"] {
+      visibility: hidden;
+    }
+
+    label[for="id_emails"]::after {
+      visibility: visible;
+      display: block;
+      content: 'Email: ';
+      padding: 5px;
+      top: 2px;
+    }
+
+    label[for="id_image"] {
+      visibility: hidden;
+    }
+
+    label[for="id_image"]::after {
+      visibility: visible;
+      display: block;
+      content: 'Image ';
+      padding: 5px;
+      top: 2px;
+    }
+  </style>
+
+  <div class="container mt-5 d-flex justify-content-center" style="width: 800px;">
+
+
+    <div class="card  mt-3">
+    {% if Address == 'address' %}
+<p class="text-danger">Please fill the details correctly so you can proceed to the cart<p>
+{% endif %}
+      <div class="card-header text-center"><h4>Profile</h4></div>
+      <div class="card-body text-left">
+        <div class="">
+          {% if form.errors %}
+          <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <p>{% for error in form.errors %} enter the {{ error }} again{% endfor %}</p>
+          </div>
+          {% endif %}
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form " style="font-family:Arial, Helvetica, sans-serif;">
+            {{ p_form|crispy}}
+
+
+
+          </div>
+
+      </div>
+      <div class="container w-30 m-3 text-center">
+        <button type="submit" class="btn  mx-2 btn-outline-dark"
+          style="font-family:Arial, Helvetica, sans-serif;">Update</button>
+
+
+
+
+
+      </div>
+      </form>
+
+
+      {% comment %} <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">x</button>
+        wrong choice
+      </div> {% endcomment %}
+      <div class="card mt-2   d-flex"> 
+        <div class="card-header text-center"><h4>To Update the Password fill this form</h4></div>
+      <div class="card-body">   
+       <form method="POST">
+        {% if form.errors %}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <p>{% for error in form.errors %} enter the {{ error }} again{% endfor %}</p>
+        </div>
+        {% endif %}
+        {% csrf_token %}
+            {{password_change_form|crispy}}
+            <div class="text-center">
+            <button type="submit" class="text-center btn btn-outline-dark">Update Password</button>
+    </div>
+    </form>
+
+      </div>
+    </div>
+    </div>
+
+  </div>
+
+{% endblock  %}

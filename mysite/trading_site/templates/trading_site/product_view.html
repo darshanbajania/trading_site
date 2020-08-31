@@ -1,0 +1,148 @@
+{% extends 'trading_site/base.html' %}
+
+{% block content %}
+
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .img-zoom-container {
+            position: relative;
+        }
+
+        .img-zoom-lens {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            /*set the size of the lens:*/
+            width: 40px;
+            height: 40px;
+        }
+
+        .img-zoom-result {
+            border: 1px solid #d4d4d4;
+            /*set the size of the result div:*/
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+    <script>
+        function imageZoom(imgID, resultID) {
+            var img, lens, result, cx, cy;
+            img = document.getElementById(imgID);
+            result = document.getElementById(resultID);
+            /*create lens:*/
+            lens = document.createElement("DIV");
+            lens.setAttribute("class", "img-zoom-lens");
+            /*insert lens:*/
+            img.parentElement.insertBefore(lens, img);
+            /*calculate the ratio between result DIV and lens:*/
+            cx = result.offsetWidth / lens.offsetWidth;
+            cy = result.offsetHeight / lens.offsetHeight;
+            /*set background properties for the result DIV:*/
+            result.style.backgroundImage = "url('" + img.src + "')";
+            result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+            /*execute a function when someone moves the cursor over the image, or the lens:*/
+            lens.addEventListener("mousemove", moveLens);
+            img.addEventListener("mousemove", moveLens);
+            /*and also for touch screens:*/
+            lens.addEventListener("touchmove", moveLens);
+            img.addEventListener("touchmove", moveLens);
+            function moveLens(e) {
+                var pos, x, y;
+                /*prevent any other actions that may occur when moving over the image:*/
+                e.preventDefault();
+                /*get the cursor's x and y positions:*/
+                pos = getCursorPos(e);
+                /*calculate the position of the lens:*/
+                x = pos.x - (lens.offsetWidth / 2);
+                y = pos.y - (lens.offsetHeight / 2);
+                /*prevent the lens from being positioned outside the image:*/
+                if (x > img.width - lens.offsetWidth) { x = img.width - lens.offsetWidth; }
+                if (x < 0) { x = 0; }
+                if (y > img.height - lens.offsetHeight) { y = img.height - lens.offsetHeight; }
+                if (y < 0) { y = 0; }
+                /*set the position of the lens:*/
+                lens.style.left = x + "px";
+                lens.style.top = y + "px";
+                /*display what the lens "sees":*/
+                result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+            }
+            function getCursorPos(e) {
+                var a, x = 0, y = 0;
+                e = e || window.event;
+                /*get the x and y positions of the image:*/
+                a = img.getBoundingClientRect();
+                /*calculate the cursor's x and y coordinates, relative to the image:*/
+                x = e.pageX - a.left;
+                y = e.pageY - a.top;
+                /*consider any page scrolling:*/
+                x = x - window.pageXOffset;
+                y = y - window.pageYOffset;
+                return { x: x, y: y };
+            }
+        }
+
+    </script>
+
+
+</head>
+
+<body>
+
+
+    <div class="container mt-5 d-flex">
+        <div class="card mt-3" style="width: 100rem;">
+            <h2 class="card-title">{{clicked_items.product_name}}</h2>
+            
+            <div class="container d-flex">
+                <div class="container">
+                    <div class="card img-zoom-container">
+                        <div class="card-body p_image">
+                            <img id="myimage" class="card-img-top" src="{{clicked_items.product_image.url}}"
+                                alt="Card image cap">
+                            <div id="myresult" class="img-zoom-result"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="container">
+                    <h1 class="card-title">{{clicked_items.product_name}}</h1>
+                    <h2>Product Description</h2>
+                    {{clicked_items.description}}
+                    <br>
+                    {% if clicked_items.stock == 0 %}
+                    <p class="text-danger">Out of stock</p><br>
+                    Price: €{{clicked_items.price}}<br>
+                    <button class="btn btn-primary ml-5 my-2" type="submit" disabled>Add to Cart</button><br>
+                 {% else %}
+                    Current Stock: {{clicked_items.stock}}<br>
+                    Price: €{{clicked_items.price}}
+                    <form method="POST" enctype="multipart/form-data" >
+                        {% csrf_token %}
+                        <input type="hidden" id="custId" name="product_id" value="{{clicked_items.product_id}}">
+                        Qty: <input type="number" default="1" min="1" max="10" name="quantity" value="1"><br>
+                        <button class="btn btn-primary ml-5 my-2" type="submit">Add to Cart</button><br>
+                        <!-- <button class="btn btn-primary ml-5 my-2" type="submit">Add to wishlist</button> -->
+                    </form>
+   {% endif %}
+                    <!-- <div class="card">
+            <div class="card-body">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's
+                    content.</p>
+            </div>
+        </div> -->
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script>
+        imageZoom("myimage", "myresult");
+    </script>
+</body>
+{% endblock  %}
