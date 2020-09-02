@@ -10,6 +10,7 @@ urlpatterns = [
     path('',views.Home_view,name='home'),
     path('products/',views.Product_view,name='Products_view'),
     path('about/',views.About_us_view,name='about'),
+    path('lottery/',views.Games_view,name='lottery'),
     path('single_beds/',views.Single_bed_view, name = 'single'),
     path('Double_beds/',views.Double_bed_view, name = 'double'),
     path('King_beds/',views.King_bed_view, name = 'king'),

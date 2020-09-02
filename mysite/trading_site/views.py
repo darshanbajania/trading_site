@@ -249,7 +249,17 @@ def About_us_view(request):
         'purchased_items' : purchased_items,
     }
     return render(request,'trading_site/about.html',context)
-         
+
+def Games_view(request):
+    purchased_items=''
+    if request.session.has_key('is_logged_in'):
+        current_customer =  Customers.objects.filter(user=  request.user).first()
+        purchased_items = len(eval(current_customer.currently_purchased_products))
+    context = {
+        'purchased_items' : purchased_items,
+    }
+    return render(request,'trading_site/Lottery.html',context)
+
 @login_required
 # viewving cart
 def Cart_view(request):
@@ -764,3 +774,6 @@ def Admin_products_detail_update_view(request):
         return render(request, 'trading_site/admin_products_detail_update.html',context)
     else:
         return redirect('trading_site:home')
+
+
+    
