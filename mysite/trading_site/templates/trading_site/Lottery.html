@@ -3,11 +3,12 @@
 {% block content %}
 <div class="container">
 <div class="card-group">
+{% for details in ticket_details %}
   <div class="card">
-    <img class="card-img-top" src="/media/lottery_silver.jpg" alt="Card image cap">
+    <img class="card-img-top" src="{{details.ticket_image.url}}" alt="Card image cap">
     <div class="card-body">
-      <h5 class="card-title">Bronze</h5>
-      <p class="card-text">Sometimes you don't want to risk your money. So this is small ticket for only 10 pounds</p>
+      <h5 class="card-title">{{details.ticket_name}}</h5>
+      <p class="card-text">{{details.ticket_description}}Sometimes you don't want to risk your money. So this is small ticket for only 10 pounds</p>
       <div>
       <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
       </div>
@@ -15,8 +16,8 @@
 <button class="btn btn-primary">Buy</button>
 </div>
     </div>
-  </div>
-  <div class="card">
+  </div>{% endfor %}
+  {% comment %} <div class="card">
     <img class="card-img-top" src="/media/lottery_silver2.jpg" alt="Card image cap">
     <div class="card-body">
       <h5 class="card-title">Silver</h5>
@@ -41,7 +42,7 @@
 <button class="btn btn-primary">Buy</button>
 </div>
     </div>
-  </div>
+  </div> {% endcomment %}
 </div>
 </div>
 {% endblock  %}

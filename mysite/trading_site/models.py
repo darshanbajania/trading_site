@@ -58,3 +58,15 @@ class Home_page_images(models.Model):
     def __str__(self):
         return f'Home page Images'
 
+class Ticket(models.Model):
+    Ticket_id = models.CharField(max_length=10)
+    ticket_name = models.CharField(max_length=300)
+    ticket_image = CloudinaryField('avatar')
+    ticket_description = models.CharField(default="ticket description", max_length=1500)
+    ticket_price = models.CharField(default='100', max_length=20)
+    ticket_availability = models.CharField(default="No", max_length=10)
+    ticket_stock = models.IntegerField(default="0")
+
+
+    def __str__(self):
+        return f'{self.ticket_name}'

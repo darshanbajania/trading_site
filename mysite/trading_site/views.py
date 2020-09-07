@@ -4,7 +4,7 @@ from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
-from .models import Products, Customers, User_id, Purchase_details, Home_page_images
+from .models import Products, Customers, User_id, Purchase_details, Home_page_images, Ticket
 from django.core.paginator import Paginator
 from django.urls import reverse
 from urllib.parse import urlencode
@@ -252,11 +252,14 @@ def About_us_view(request):
 
 def Games_view(request):
     purchased_items=''
+    all_tickets = Ticket.objects.all()
     if request.session.has_key('is_logged_in'):
         current_customer =  Customers.objects.filter(user=  request.user).first()
         purchased_items = len(eval(current_customer.currently_purchased_products))
+        
     context = {
         'purchased_items' : purchased_items,
+        'ticket_details' : all_tickets,
     }
     return render(request,'trading_site/Lottery.html',context)
 
