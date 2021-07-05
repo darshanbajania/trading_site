@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <title>Home</title>
     <style>
         img {
@@ -21,13 +20,26 @@
         .carousel-inner {
             height: 600px;
         }
+  #myVideo {
+  position: relative;
+  right: 0;
+  bottom: 0;
+ 
+  
+  height: 760px;
+  width: 100%;
+} 
+nav{
+
+    opacity:0.5;
+}
     </style>
 </head>
 
 <body>
 
 
- <div class="mb-5">
+ <div class="h">
         <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="{% url 'trading_site:home' %}">Home</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -128,8 +140,12 @@
    
     {% block content %}
 
+<video  autoplay muted loop id="myVideo" class="p=0">
+  <source src="media/particles.mp4" type="video/mp4">
+</video>
+
        <div class="container-fluid">
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <div  id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                 <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -194,13 +210,14 @@
                                 </div>
                                 
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div class="text-center">
+                                    
                                         <form method="POST">
                                         {% csrf_token %}
+                                        <div class="text-center">
                                             <input type="hidden" name="id" value="{{products.product_id}}">
                                         <button type="submit" class="btn btn-outline-dark stretched-link" href="{% url 'trading_site:Products_view' %}">View</button>
-                                        </form>
-                                    </div>
+                                        
+                                    </div></form>
                                     <small class="text-muted">{% if products.stock == 0 %}
                                                                <p class="text-danger">Not Available<p>
                                                                 {% else %}
@@ -215,7 +232,7 @@
                 </div>
             </div>
         </div>
- 
+ <div class="wow fadeInUp"style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;" data-wow-delay="0.4s">hello </div>
     {% endblock  %}
 
 <footer class="container py-5">
@@ -267,6 +284,12 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous"></script>
+<script>
+AOS.init({
+  duration: 1200,
+})
+</script>
 </body>
 
 </html>

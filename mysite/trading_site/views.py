@@ -405,7 +405,7 @@ def Checkout_view(request):
 
 def Order_Checkout_view(request):
     if request.session.has_key('is_logged_in'):
-        body = json.loads(request.body)
+        body = json.loads(request)
         body_value = body['product_id']
         if body_value == 'complete':
             temp_list = []
